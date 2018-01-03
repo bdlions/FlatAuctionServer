@@ -1,6 +1,5 @@
 package org.bdlions.auction.dto;
 
-import com.bdlions.dto.response.ClientResponse;
 import java.util.List;
 import org.bdlions.auction.entity.EntityAccountStatus;
 import org.bdlions.auction.entity.EntityRole;
@@ -11,10 +10,37 @@ import org.bdlions.auction.entity.EntityUser;
  * @author Nazmul Hasan
  */
 public class DTOUser implements java.io.Serializable {
+    public int offset;
+    public int limit;
     public EntityUser entityUser;
     public List<EntityRole> roles;
     public EntityAccountStatus entityAccountStatus;
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public EntityAccountStatus getEntityAccountStatus() {
+        return entityAccountStatus;
+    }
+
+    public void setEntityAccountStatus(EntityAccountStatus entityAccountStatus) {
+        this.entityAccountStatus = entityAccountStatus;
+    }
+
+    
     public EntityUser getEntityUser() {
         return entityUser;
     }

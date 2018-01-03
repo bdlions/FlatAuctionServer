@@ -78,7 +78,7 @@ public class AuthHandlerTest extends HTTPRequestHelper{
         System.out.println("Result : " + result);
     }
     
-    @Test
+    //@Test
     public void signUpTest() {
         PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.SIGN_UP);

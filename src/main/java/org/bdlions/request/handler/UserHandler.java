@@ -43,7 +43,18 @@ public class UserHandler {
     @ClientRequest(action = ACTION.FETCH_USER_INFO)
     public ClientResponse getUserInfo(ISession session, IPacket packet) throws Exception 
     {
-        int userId = (int)session.getUserId();
+        Gson gson = new Gson();
+        EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        int userId = 0;
+        if(entityUser == null || entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        }        
+        
         DTOUser dtoUser = new DTOUser();        
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser entiryUser = entityManagerUser.getUserByUserId(userId);
@@ -72,12 +83,56 @@ public class UserHandler {
     @ClientRequest(action = ACTION.FETCH_USER_PROFILE_INFO)
     public ClientResponse getUserProfileInfo(ISession session, IPacket packet) throws Exception 
     {
-        int userId = (int)session.getUserId();
+        Gson gson = new Gson();
+        EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        int userId = 0;
+        if(entityUser == null || entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        }  
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser entiryUser = entityManagerUser.getUserByUserId(userId);
         ClientResponse clientResponse = new ClientResponse();
         clientResponse.setSuccess(true);
         clientResponse.setResult(entiryUser);        
+        return clientResponse;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_USER_ROLES)
+    public ClientResponse getUserRoles(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        int userId = 0;
+        if(entityUser == null || entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        }  
+        List<EntityRole> roles = new ArrayList<>();
+        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+        List<EntityUserRole> userRoles = entityManagerUserRole.getUserRolesByUserId(userId);
+        if(userRoles != null && !userRoles.isEmpty())
+        {
+            List<Integer> roleIds = new ArrayList<>();
+            for(EntityUserRole entityUserRole: userRoles)
+            {
+                roleIds.add(entityUserRole.getRoleId());
+            }
+            EntityManagerRole entityManagerRole = new EntityManagerRole();
+            roles = entityManagerRole.getRolesByRoleIds(roleIds);
+        }
+        
+        ClientListResponse clientResponse = new ClientListResponse();
+        clientResponse.setSuccess(true);
+        clientResponse.setList(roles);
         return clientResponse;
     }
     
@@ -136,6 +191,13 @@ public class UserHandler {
     {
         Gson gson = new Gson();
         EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        if(entityUser == null)
+        {
+            ClientResponse clientResponse = new ClientResponse();
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid requst to update prfile picture.");
+            return clientResponse;
+        }
         //read image from temp directory and place into user profile picture directory
         String imageFileName = entityUser.getImg().trim().replaceAll("\n", "");
         entityUser.setImg(imageFileName);
@@ -172,7 +234,15 @@ public class UserHandler {
             imageLibrary.resizeImage(uploadPath + imageFileName, profilePicPath50_50 + imageFileName, Constants.IMG_PROFILE_PIC_WIDTH_50, Constants.IMG_PROFILE_PIC_HEIGHT_50);
         }
         
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        } 
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser eUser = entityManagerUser.getUserByUserId(userId);
         eUser.setImg(entityUser.getImg());
@@ -187,6 +257,13 @@ public class UserHandler {
     public ClientResponse updateUserLogo(ISession session, IPacket packet){
         Gson gson = new Gson();
         EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        if(entityUser == null)
+        {
+            ClientResponse clientResponse = new ClientResponse();
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid requst to update logo.");
+            return clientResponse;
+        }
         //read image from temp directory and place into user logo directory
         String imageFileName = entityUser.getAgentLogo().trim().replaceAll("\n", "");
         entityUser.setAgentLogo(imageFileName);
@@ -212,10 +289,18 @@ public class UserHandler {
             
             
         }
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        } 
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser eUser = entityManagerUser.getUserByUserId(userId);
-        eUser.setAgentLogo(entityUser.getImg());
+        eUser.setAgentLogo(entityUser.getAgentLogo());
         entityManagerUser.updateUser(eUser);
         
         GeneralResponse response = new GeneralResponse();
@@ -228,6 +313,13 @@ public class UserHandler {
     public ClientResponse updateUserDocument(ISession session, IPacket packet){
         Gson gson = new Gson();
         EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        if(entityUser == null)
+        {
+            ClientResponse clientResponse = new ClientResponse();
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid requst to update document.");
+            return clientResponse;
+        }
         //read image from temp directory and place into user logo directory
         String imageFileName = entityUser.getDocument().trim().replaceAll("\n", "");
         entityUser.setDocument(imageFileName);
@@ -242,7 +334,15 @@ public class UserHandler {
             //copy actual image
             FileUtils.copyFile(uploadPath + imageFileName, documentPath + imageFileName);
         }
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(entityUser.getId() == 0)
+        {
+            userId = (int)session.getUserId();            
+        }
+        else
+        {
+            userId = entityUser.getId();
+        } 
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser eUser = entityManagerUser.getUserByUserId(userId);
         eUser.setDocument(entityUser.getDocument());

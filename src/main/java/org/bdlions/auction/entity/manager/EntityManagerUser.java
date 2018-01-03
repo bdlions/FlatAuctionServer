@@ -302,6 +302,19 @@ public class EntityManagerUser
             session.close();
         }
     }
+    public int getTotalUsers() 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityUser> query = session.getNamedQuery("getUsers");
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
     
     public List<EntityUser> getUsersByUserIds(List<Integer> userIds) 
     {

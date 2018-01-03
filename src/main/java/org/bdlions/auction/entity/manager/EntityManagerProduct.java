@@ -113,6 +113,36 @@ public class EntityManagerProduct {
         }
     }
     
+    public List<EntityProduct> getProducts(int offset, int limit) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getAllProducts");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    public int getTotalProducts() 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getAllProducts");
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     public List<EntityProduct> getUserProducts(int userId, int offset, int limit) 
     {
         Session session = HibernateUtil.getSession();
