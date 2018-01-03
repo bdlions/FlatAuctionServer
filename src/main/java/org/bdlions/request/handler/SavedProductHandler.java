@@ -1,31 +1,19 @@
 package org.bdlions.request.handler;
 
-import com.bdlions.dto.Credential;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
 import com.bdlions.util.ACTION;
-import com.bdlions.commons.ClientMessages;
 import com.bdlions.dto.response.ClientListResponse;
 import com.bdlions.dto.response.ClientResponse;
-import com.bdlions.dto.response.SignInResponse;
-import org.bdlions.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
-import org.bdlions.auction.dto.DTOBid;
 import org.bdlions.auction.dto.DTOProduct;
-import org.bdlions.auction.dto.DTOUser;
-import org.bdlions.auction.entity.EntityBid;
 import org.bdlions.auction.entity.EntityProduct;
-import org.bdlions.auction.entity.EntityRole;
-import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.EntitySavedProduct;
-import org.bdlions.auction.entity.EntityUserRole;
-import org.bdlions.auction.entity.manager.EntityManagerBid;
 import org.bdlions.auction.entity.manager.EntityManagerProduct;
-import org.bdlions.auction.entity.manager.EntityManagerUser;
 import org.bdlions.auction.entity.manager.EntityManagerSavedProduct;
 
 //import org.apache.shiro.authc.UnknownAccountException;
@@ -85,8 +73,15 @@ public class SavedProductHandler {
             clientResponse.setMessage("Invalid request with offset and limit.");
             return clientResponse;
         }
-        
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(dtoProduct.getEntityProduct() == null || dtoProduct.getEntityProduct().getUserId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = dtoProduct.getEntityProduct().getUserId();
+        }
         EntityManagerSavedProduct entityManagerUserProduct = new EntityManagerSavedProduct();
         List<EntitySavedProduct> entityUserProductList = entityManagerUserProduct.getSavedProductsByUserId(userId, dtoProduct.getOffset(), dtoProduct.getLimit());
         if(entityUserProductList != null && !entityUserProductList.isEmpty())

@@ -308,7 +308,16 @@ public class ProductHandler {
             clientListResponse.setMessage("Invalid request to get ad list. Please try again later.");
             return clientListResponse;
         }
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(dtoProduct.getEntityProduct() == null || dtoProduct.getEntityProduct().getUserId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = dtoProduct.getEntityProduct().getUserId();
+        }
+        
         EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
         List<EntityProduct> entityProductList = entityManagerProduct.getUserProducts(userId, dtoProduct.getOffset(), dtoProduct.getLimit());
         int totalProducts = entityManagerProduct.getUserTotalProducts(userId);
