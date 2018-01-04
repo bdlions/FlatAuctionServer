@@ -133,7 +133,15 @@ public class MessageHandler {
             clientResponse.setMessage("Invalid message body. Please try again later.");
             return clientResponse;
         }
-        int userId = (int)session.getUserId();
+        int userId = 0;
+        if(entityMessageBody.getUserId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = entityMessageBody.getUserId();
+        }        
         entityMessageBody.setUserId(userId);
         EntityManagerMessageBody entityManagerMessageBody = new EntityManagerMessageBody();
         EntityMessageBody emBody = entityManagerMessageBody.createMessageBody(entityMessageBody);
@@ -154,12 +162,25 @@ public class MessageHandler {
     @ClientRequest(action = ACTION.FETCH_MESSAGE_SENT_LIST)
     public ClientResponse getSentMessageList(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse clientResponse = new ClientListResponse();
-        
+        ClientListResponse clientListResponse = new ClientListResponse();        
         Gson gson = new Gson();
         DTOMessageHeader dtoMessageHeader = gson.fromJson(packet.getPacketBody(), DTOMessageHeader.class);
+        if(dtoMessageHeader == null)
+        {
+            clientListResponse.setSuccess(false);
+            clientListResponse.setMessage("Invalid request to get message sent list.");
+            return clientListResponse;
+        }
+        int userId = 0;
+        if(dtoMessageHeader.getSender() == null  || dtoMessageHeader.getSender().getId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = dtoMessageHeader.getSender().getId();
+        }
         
-        int userId = (int)session.getUserId();
         EntityManagerMessageHeader entityManagerMessageHeader = new EntityManagerMessageHeader();
         List<EntityMessageHeader> messageHeaderList = entityManagerMessageHeader.getSentMessageList(userId, dtoMessageHeader.getOffset(), dtoMessageHeader.getLimit());
         List<Integer> userIdList = new ArrayList<>();
@@ -190,20 +211,35 @@ public class MessageHandler {
             tempDTOMessageHeader.setEntityMessageHeader(entityMessageHeader);
             dtoMessageHeaderList.add(tempDTOMessageHeader);
         }
-        clientResponse.setList(dtoMessageHeaderList);
-        clientResponse.setCounter(entityManagerMessageHeader.getTotalSentMessageList(userId));
-        return clientResponse;
+        clientListResponse.setList(dtoMessageHeaderList);
+        clientListResponse.setCounter(entityManagerMessageHeader.getTotalSentMessageList(userId));
+        clientListResponse.setSuccess(true);
+        return clientListResponse;
     }
     
     @ClientRequest(action = ACTION.FETCH_MESSAGE_INBOX_LIST)
     public ClientResponse getInboxMessageList(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse clientResponse = new ClientListResponse();
+        ClientListResponse clientListResponse = new ClientListResponse();
         
         Gson gson = new Gson();
         DTOMessageHeader dtoMessageHeader = gson.fromJson(packet.getPacketBody(), DTOMessageHeader.class);
+        if(dtoMessageHeader == null)
+        {
+            clientListResponse.setSuccess(false);
+            clientListResponse.setMessage("Invalid request to get inbox message list.");
+            return clientListResponse;
+        }
+        int userId = 0;
+        if(dtoMessageHeader.getSender() == null || dtoMessageHeader.getSender().getId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = dtoMessageHeader.getSender().getId();
+        }
         
-        int userId = (int)session.getUserId();
         EntityManagerMessageHeader entityManagerMessageHeader = new EntityManagerMessageHeader();
         List<EntityMessageHeader> messageHeaderList = entityManagerMessageHeader.getInboxMessageList(userId, dtoMessageHeader.getOffset(), dtoMessageHeader.getLimit());
         List<Integer> userIdList = new ArrayList<>();
@@ -248,9 +284,10 @@ public class MessageHandler {
             tempDTOMessageHeader.setEntityMessageHeader(entityMessageHeader);
             dtoMessageHeaderList.add(tempDTOMessageHeader);
         }
-        clientResponse.setList(dtoMessageHeaderList);
-        clientResponse.setCounter(entityManagerMessageHeader.getTotalInboxMessageList(userId));
-        return clientResponse;
+        clientListResponse.setList(dtoMessageHeaderList);
+        clientListResponse.setCounter(entityManagerMessageHeader.getTotalInboxMessageList(userId));
+        clientListResponse.setSuccess(true);
+        return clientListResponse;
     }
     
     @ClientRequest(action = ACTION.FETCH_MESSAGE_BODY_LIST)
