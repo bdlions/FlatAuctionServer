@@ -2,7 +2,7 @@ package org.bdlions.auction.entity.manager;
 
 import java.util.List;
 import org.bdlions.auction.db.HibernateUtil;
-import org.bdlions.auction.entity.EntityBid;
+import org.bdlions.auction.entity.EntityAutoBid;
 import org.bdlions.auction.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -11,23 +11,23 @@ import org.hibernate.query.Query;
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerBid {
+public class EntityManagerAutoBid {
     
-    public EntityBid createBid(EntityBid entityBid, Session session)
+    public EntityAutoBid createAutoBid(EntityAutoBid entityAutoBid, Session session)
     {
         TimeUtils timeUtils = new TimeUtils();
-        entityBid.setCreatedOn(timeUtils.getCurrentTime());
-        entityBid.setModifiedOn(timeUtils.getCurrentTime());
-        session.save(entityBid);
-        return entityBid;
+        entityAutoBid.setCreatedOn(timeUtils.getCurrentTime());
+        entityAutoBid.setModifiedOn(timeUtils.getCurrentTime());
+        session.save(entityAutoBid);
+        return entityAutoBid;
     }
     
-    public EntityBid createBid(EntityBid entityBid)
+    public EntityAutoBid createAutoBid(EntityAutoBid entityAutoBid)
     {
         Session session = HibernateUtil.getSession();
         try 
         {
-            return createBid(entityBid, session);
+            return createAutoBid(entityAutoBid, session);
         } 
         finally 
         {
@@ -35,12 +35,12 @@ public class EntityManagerBid {
         }
     }
     
-    public List<EntityBid> getProductBids(int productId, int offset, int limit) 
+    public List<EntityAutoBid> getProductAutoBids(int productId, int offset, int limit) 
     {
         Session session = HibernateUtil.getSession();
         try 
         {
-            Query<EntityBid> query = session.getNamedQuery("getBidsByProductId");
+            Query<EntityAutoBid> query = session.getNamedQuery("getAutoBidsByProductId");
             query.setParameter("productId", productId);
             query.setFirstResult(offset);
             query.setMaxResults(limit);
@@ -52,12 +52,12 @@ public class EntityManagerBid {
         }
     }
     
-    public int getProductTotalBids(int productId) 
+    public int getProductTotalAutoBids(int productId) 
     {
         Session session = HibernateUtil.getSession();
         try 
         {
-            Query<EntityBid> query = session.getNamedQuery("getBidsByProductId");
+            Query<EntityAutoBid> query = session.getNamedQuery("getAutoBidsByProductId");
             query.setParameter("productId", productId);
             return query.getResultList().size();
         } 

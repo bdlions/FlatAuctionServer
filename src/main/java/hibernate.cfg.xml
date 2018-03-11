@@ -43,6 +43,7 @@
         <mapping class="org.bdlions.auction.entity.EntityProduct" />
         <mapping class="org.bdlions.auction.entity.EntitySavedProduct" />
         <mapping class="org.bdlions.auction.entity.EntityBid" />
+        <mapping class="org.bdlions.auction.entity.EntityAutoBid" />
         <mapping class="org.bdlions.auction.entity.EntityMessageHeader" />
         <mapping class="org.bdlions.auction.entity.EntityMessageBody" /> 
     </session-factory>

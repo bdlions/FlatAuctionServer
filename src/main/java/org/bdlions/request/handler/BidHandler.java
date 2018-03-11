@@ -1,26 +1,22 @@
 package org.bdlions.request.handler;
 
-import com.bdlions.dto.Credential;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
 import com.bdlions.util.ACTION;
-import com.bdlions.commons.ClientMessages;
 import com.bdlions.dto.response.ClientListResponse;
 import com.bdlions.dto.response.ClientResponse;
-import com.bdlions.dto.response.SignInResponse;
-import org.bdlions.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import org.bdlions.auction.dto.DTOAutoBid;
 import org.bdlions.auction.dto.DTOBid;
-import org.bdlions.auction.dto.DTOUser;
+import org.bdlions.auction.entity.EntityAutoBid;
 import org.bdlions.auction.entity.EntityBid;
 import org.bdlions.auction.entity.EntityProduct;
-import org.bdlions.auction.entity.EntityRole;
 import org.bdlions.auction.entity.EntityUser;
-import org.bdlions.auction.entity.EntityUserRole;
+import org.bdlions.auction.entity.manager.EntityManagerAutoBid;
 import org.bdlions.auction.entity.manager.EntityManagerBid;
 import org.bdlions.auction.entity.manager.EntityManagerProduct;
 import org.bdlions.auction.entity.manager.EntityManagerUser;
@@ -81,7 +77,7 @@ public class BidHandler {
         if(userId == entityProduct.getUserId())
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Sorry!! You Can't place bid on your own ad.");
+            clientResponse.setMessage("Sorry!! You Can't place a bid on your own ad.");
             return clientResponse;
         }
         EntityManagerUser entityManagerUser = new EntityManagerUser();
@@ -139,6 +135,108 @@ public class BidHandler {
             bidList.add(entityBid);
         }
         
+        clientResponse.setList(bidList);
+        clientResponse.setCounter(totalBids);
+        clientResponse.setSuccess(true);
+        return clientResponse;
+    }
+    
+    //Auto Bid Section Starts
+    @ClientRequest(action = ACTION.ADD_PRODUCT_AUTO_BID)
+    public ClientResponse addAutoBidInfo(ISession session, IPacket packet) throws Exception 
+    {
+        ClientResponse clientResponse = new ClientResponse();
+        Gson gson = new Gson();
+        EntityAutoBid reqEntityAutoBid = gson.fromJson(packet.getPacketBody(), EntityAutoBid.class);
+        if(reqEntityAutoBid == null )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid auto bid info. Please try again later.");
+            return clientResponse;
+        }
+        if( reqEntityAutoBid.getProductId() <= 0 )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid product to add auto bid. Please try again later.");
+            return clientResponse;
+        }
+        if( reqEntityAutoBid.getPrice() <= 0 )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Please assign valid amount for the auto bid.");
+            return clientResponse;
+        }
+        
+        
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct entityProduct = entityManagerProduct.getProductById(reqEntityAutoBid.getProductId());
+        TimeUtils timeUtils = new TimeUtils();
+        long currentTime = timeUtils.getCurrentTime();
+        if(currentTime > entityProduct.getUnixAuctionEnd())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Sorry!! Auction is ended.");
+            return clientResponse;
+        }        
+        
+        int userId = (int)session.getUserId();
+        if(userId == entityProduct.getUserId())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Sorry!! You Can't place an auto bid on your own ad.");
+            return clientResponse;
+        }
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByUserId(userId);        
+        reqEntityAutoBid.setUserId(userId);
+        reqEntityAutoBid.setFullName(entityUser.getFirstName() + " " +entityUser.getLastName());
+        
+        EntityManagerAutoBid entityManagerAutoBid = new EntityManagerAutoBid();
+        EntityAutoBid entityAutoBid = entityManagerAutoBid.createAutoBid(reqEntityAutoBid);
+        if(entityAutoBid != null && entityAutoBid.getId() > 0)
+        {
+            clientResponse.setSuccess(true);
+            clientResponse.setResult(entityAutoBid);
+            clientResponse.setMessage("Auto bid is placed successfully.");
+        }
+        else
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Unable to add auto bid. Please try again later.");
+        }
+        return clientResponse;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_PRODUCT_AUTO_BID_LIST)
+    public ClientResponse getProductAutoBidList(ISession session, IPacket packet) throws Exception 
+    {
+        ClientListResponse clientResponse = new ClientListResponse();
+        Gson gson = new Gson();
+        DTOAutoBid dtoAutobid = gson.fromJson(packet.getPacketBody(), DTOAutoBid.class);
+        
+        if(dtoAutobid == null || dtoAutobid.getEntityAutoBid() == null )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid request to get auto bid list. Please try again later.");
+            return clientResponse;
+        }
+        if(dtoAutobid.getEntityAutoBid().getProductId() <=0 )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid product to get auto bid list. Please try again later.");
+            return clientResponse;
+        }
+        EntityManagerAutoBid entityManagerAutoBid = new EntityManagerAutoBid();
+        List<EntityAutoBid> bids = entityManagerAutoBid.getProductAutoBids(dtoAutobid.getEntityAutoBid().getProductId(), dtoAutobid.getOffset(), dtoAutobid.getLimit());
+        int totalBids = entityManagerAutoBid.getProductTotalAutoBids(dtoAutobid.getEntityAutoBid().getProductId());
+        
+        List<EntityAutoBid> bidList = new ArrayList<>();
+        TimeUtils timeUtils = new TimeUtils();
+        for(EntityAutoBid entityAutoBid : bids)
+        {
+            entityAutoBid.setCreatedTime(timeUtils.convertUnixToHuman(entityAutoBid.getCreatedOn(), ""));
+            bidList.add(entityAutoBid);
+        }        
         clientResponse.setList(bidList);
         clientResponse.setCounter(totalBids);
         clientResponse.setSuccess(true);

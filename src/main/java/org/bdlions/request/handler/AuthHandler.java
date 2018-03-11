@@ -132,6 +132,36 @@ public class AuthHandler {
             clientResponse.setMessage("Invalid user info. Please try again later.");
             return clientResponse;
         }
+        if(StringUtils.isNullOrEmpty(dtoUser.getEntityUser().getFirstName()))
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("First name is required.");
+            return clientResponse;
+        }
+        if(StringUtils.isNullOrEmpty(dtoUser.getEntityUser().getEmail()))
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Email is required.");
+            return clientResponse;
+        }
+        if(StringUtils.isNullOrEmpty(dtoUser.getEntityUser().getPassword()))
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Password is required.");
+            return clientResponse;
+        }
+        if(dtoUser.getRoles() == null || dtoUser.getRoles().isEmpty())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Role is required.");
+            return clientResponse;
+        }
+        if(dtoUser.getEntityUser().getGenderId() <= 0)
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Gender is required.");
+            return clientResponse;
+        }        
         List<EntityUserRole> entityUserRoles = new ArrayList<>();
         if(dtoUser.getRoles() != null && !dtoUser.getRoles().isEmpty())
         {
@@ -168,6 +198,7 @@ public class AuthHandler {
         if(entityUser != null && entityUser.getId() > 0)
         {
             clientResponse.setSuccess(true);
+            clientResponse.setMessage("Account created successfully. Please login.");
             return clientResponse;
         }
         return clientResponse;
