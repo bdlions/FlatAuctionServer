@@ -78,6 +78,12 @@ public class BidHandler {
         }        
         
         int userId = (int)session.getUserId();
+        if(userId == entityProduct.getUserId())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Sorry!! You Can't place bid on your own ad.");
+            return clientResponse;
+        }
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser entityUser = entityManagerUser.getUserByUserId(userId);        
         reqEntityBid.setUserId(userId);
