@@ -13,13 +13,16 @@ public class Constants {
     public static final int ROLE_ID_TANENT = 3;
     public static final int ROLE_ID_AGENT = 4;
     
+    public static final int GENDER_ID_MALE  = 1;
+    public static final int GENDER_ID_FEMALE = 2;
+    
     public static final int CURRENCY_UNIT_DEFAULT = 1;    
    
-    public static final String SERVER_BASE_PATH = "F:\\projects\\shem\\Auction\\revised\\FlatAuctionServer\\";
+    //public static final String SERVER_BASE_PATH = "F:\\projects\\shem\\Auction\\revised\\FlatAuctionServer\\";
     //public static final String SERVER_BASE_PATH = "/opt/tomcat/webapps/FlatAuctionServer/";
     
     
-    public static final String SERVER_ROOT_DIR = "../../";
+    //public static final String SERVER_ROOT_DIR = "../../";
     public static final String IMAGE_UPLOAD_PATH = "uploads/";
     
     public static final int IMG_PROFILE_PIC_WIDTH  = 150;

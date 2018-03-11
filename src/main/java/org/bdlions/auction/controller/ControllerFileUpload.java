@@ -8,6 +8,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import org.bdlions.auction.util.Constants;
+import org.bdlions.auction.util.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,7 +37,7 @@ public class ControllerFileUpload {
                 name = file.getOriginalFilename();
 
                 // Creating the directory to store file
-                String rootPath = Constants.SERVER_BASE_PATH +"uploads/";
+                String rootPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMAGE_UPLOAD_PATH;
                 File dir = new File(rootPath);
                 if (!dir.exists()) {
                     dir.mkdirs();

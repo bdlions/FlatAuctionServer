@@ -26,6 +26,7 @@
         
         <mapping class="org.bdlions.auction.entity.EntityAccountStatus" />
         <mapping class="org.bdlions.auction.entity.EntityRole" />
+        <mapping class="org.bdlions.auction.entity.EntityGender" />
         <mapping class="org.bdlions.auction.entity.EntityUser" />
         <mapping class="org.bdlions.auction.entity.EntityUserRole" />
         <mapping class="org.bdlions.auction.entity.EntityProductCategory" /> 

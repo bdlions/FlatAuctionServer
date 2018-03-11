@@ -13,14 +13,17 @@ import org.bdlions.util.annotation.ClientRequest;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.auction.dto.DTOUser;
+import org.bdlions.auction.entity.EntityGender;
 import org.bdlions.auction.entity.EntityRole;
 import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.EntityUserRole;
+import org.bdlions.auction.entity.manager.EntityManagerGender;
 import org.bdlions.auction.entity.manager.EntityManagerRole;
 import org.bdlions.auction.entity.manager.EntityManagerUser;
 import org.bdlions.auction.entity.manager.EntityManagerUserRole;
 import org.bdlions.auction.util.Constants;
 import org.bdlions.auction.util.FileUtils;
+import org.bdlions.auction.util.ServerConfig;
 import org.bdlions.library.ImageLibrary;
 import org.bdlions.util.StringUtils;
 import org.slf4j.Logger;
@@ -102,6 +105,17 @@ public class UserHandler {
         return clientResponse;
     }
     
+    @ClientRequest(action = ACTION.FETCH_GENDERS)
+    public ClientResponse getGenders(ISession session, IPacket packet) throws Exception 
+    {
+        EntityManagerGender entityManagerGender = new EntityManagerGender();
+        List<EntityGender> genders = entityManagerGender.getAllGenders();             
+        ClientListResponse clientListResponse = new ClientListResponse();
+        clientListResponse.setList(genders);
+        clientListResponse.setSuccess(true);
+        return clientListResponse;
+    }
+    
     @ClientRequest(action = ACTION.FETCH_USER_ROLES)
     public ClientResponse getUserRoles(ISession session, IPacket packet) throws Exception 
     {
@@ -170,6 +184,14 @@ public class UserHandler {
             clientResponse.setMessage("Invalid user info. Please try again later.");
             return clientResponse;
         }
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser tempEntityUser = entityManagerUser.getUserByEmail(dtoUser.getEntityUser().getEmail());
+        if(tempEntityUser != null && tempEntityUser.getId() != dtoUser.getEntityUser().getId())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Email already used or invalid.");
+            return clientResponse;
+        }
         List<EntityUserRole> entityUserRoles = new ArrayList<>();
         if(dtoUser.getRoles() != null && !dtoUser.getRoles().isEmpty())
         {
@@ -179,8 +201,7 @@ public class UserHandler {
                 entityUserRole.setRoleId(entityRole.getId());
                 entityUserRoles.add(entityUserRole);
             }
-        }
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        }        
         entityManagerUser.updateUser(dtoUser.getEntityUser(), entityUserRoles);
         clientResponse.setSuccess(true);
         return clientResponse;
@@ -205,8 +226,8 @@ public class UserHandler {
         {
             //String uploadPath = UserHandler.class.getClassLoader().getResource(Constants.SERVER_ROOT_DIR + Constants.IMAGE_UPLOAD_PATH).getFile();
             //String profilePicPath = UserHandler.class.getClassLoader().getResource(Constants.SERVER_ROOT_DIR + Constants.PROFILE_PIC_PATH).getFile();
-            String uploadPath = Constants.SERVER_BASE_PATH + Constants.IMAGE_UPLOAD_PATH;
-            String profilePicPath = Constants.SERVER_BASE_PATH + Constants.PROFILE_PIC_PATH;
+            String uploadPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMAGE_UPLOAD_PATH;
+            String profilePicPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.PROFILE_PIC_PATH;
             File path = new File(profilePicPath);
             if (!path.exists()) {
                 boolean status = path.mkdirs();
@@ -216,7 +237,7 @@ public class UserHandler {
             
             //resize image to 150px to 150px
             //String profilePicPath150_150 = UserHandler.class.getClassLoader().getResource(Constants.SERVER_ROOT_DIR + Constants.IMG_PROFILE_PIC_PATH_150_150).getFile();
-            String profilePicPath150_150 = Constants.SERVER_BASE_PATH + Constants.IMG_PROFILE_PIC_PATH_150_150;
+            String profilePicPath150_150 = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMG_PROFILE_PIC_PATH_150_150;
             path = new File(profilePicPath150_150);
             if (!path.exists()) {
                 boolean status = path.mkdirs();
@@ -226,7 +247,7 @@ public class UserHandler {
             
             //resize image to 50px to 50px
             //String profilePicPath50_50 = UserHandler.class.getClassLoader().getResource(Constants.SERVER_ROOT_DIR + Constants.IMG_PROFILE_PIC_PATH_50_50).getFile();
-            String profilePicPath50_50 = Constants.SERVER_BASE_PATH + Constants.IMG_PROFILE_PIC_PATH_50_50;
+            String profilePicPath50_50 = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMG_PROFILE_PIC_PATH_50_50;
             path = new File(profilePicPath50_50);
             if (!path.exists()) {
                 boolean status = path.mkdirs();
@@ -269,8 +290,8 @@ public class UserHandler {
         entityUser.setAgentLogo(imageFileName);
         if(!StringUtils.isNullOrEmpty(imageFileName))
         {
-            String uploadPath = Constants.SERVER_BASE_PATH + Constants.IMAGE_UPLOAD_PATH;
-            String logoPath = Constants.SERVER_BASE_PATH + Constants.USER_LOGO_PATH;
+            String uploadPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMAGE_UPLOAD_PATH;
+            String logoPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.USER_LOGO_PATH;
             File path = new File(logoPath);
             if (!path.exists()) {
                 boolean status = path.mkdirs();
@@ -279,7 +300,7 @@ public class UserHandler {
             FileUtils.copyFile(uploadPath + imageFileName, logoPath + imageFileName);            
             
             //resize image to 100px to 100px
-            String logoPath100_100 = Constants.SERVER_BASE_PATH + Constants.USER_LOGO_PATH_100_100;
+            String logoPath100_100 = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.USER_LOGO_PATH_100_100;
             path = new File(logoPath100_100);
             if (!path.exists()) {
                 boolean status = path.mkdirs();
@@ -325,8 +346,8 @@ public class UserHandler {
         entityUser.setDocument(imageFileName);
         if(!StringUtils.isNullOrEmpty(imageFileName))
         {
-            String uploadPath = Constants.SERVER_BASE_PATH + Constants.IMAGE_UPLOAD_PATH;
-            String documentPath = Constants.SERVER_BASE_PATH + Constants.USER_DOCUMENT_PATH;
+            String uploadPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMAGE_UPLOAD_PATH;
+            String documentPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.USER_DOCUMENT_PATH;
             File path = new File(documentPath);
             if (!path.exists()) {
                 boolean status = path.mkdirs();

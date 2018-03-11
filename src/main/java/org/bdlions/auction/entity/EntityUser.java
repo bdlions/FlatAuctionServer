@@ -83,6 +83,12 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
     
     @Column(name = "cell")
     private String cell;
+    
+    @Column(name = "gender_id", nullable = true, columnDefinition = "int default 0")
+    private int genderId;
+    
+    @Column(name = "gender_title", length = 200)
+    private String genderTitle;
 
     @Column(name = "account_status_id", nullable = false, columnDefinition = "int default 1")
     private int accountStatusId;
@@ -219,6 +225,22 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
 
     public void setDocument(String document) {
         this.document = document;
+    }
+
+    public int getGenderId() {
+        return genderId;
+    }
+
+    public void setGenderId(int genderId) {
+        this.genderId = genderId;
+    }
+
+    public String getGenderTitle() {
+        return genderTitle;
+    }
+
+    public void setGenderTitle(String genderTitle) {
+        this.genderTitle = genderTitle;
     }
     
 }

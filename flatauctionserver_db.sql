@@ -8,6 +8,10 @@ INSERT INTO `roles`(`id`, `title`, `description`) values
 (3, 'TANENT', 'Tanent'),
 (4, 'AGENT', 'Agent');
 
+INSERT INTO `genders`(`id`, `title`, `order_no`) values
+(1, 'Male', 1),
+(2, 'Female', 2);
+
 INSERT INTO `users`(`id`, `email`, `password`, `first_name`, `last_name`, `account_status_id`, `cell`) values
 (1, 'admin@gmail.com', 'pass', 'Nazmul', 'Hasan', 1, '01711123456'),
 (2, 'landlord@gmail.com', 'pass', 'Alamgir', 'Kabir', 1, '01722123456'),

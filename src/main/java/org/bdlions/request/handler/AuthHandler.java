@@ -18,6 +18,7 @@ import org.bdlions.auction.entity.EntityRole;
 import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.EntityUserRole;
 import org.bdlions.auction.entity.manager.EntityManagerUser;
+import org.bdlions.auction.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -141,9 +142,28 @@ public class AuthHandler {
                 entityUserRoles.add(entityUserRole);
             }
         }
-        //setting a default image to user profile
-        dtoUser.getEntityUser().setImg("user.jpg");
+        //setting a default image to user profile based on gender.
+        switch (dtoUser.getEntityUser().getGenderId()) {
+            case Constants.GENDER_ID_MALE:
+                dtoUser.getEntityUser().setImg("male.jpg");
+                break;
+            case Constants.GENDER_ID_FEMALE:
+                dtoUser.getEntityUser().setImg("male.jpg");
+                break;
+            default:
+                dtoUser.getEntityUser().setImg("user.jpg");
+                break;
+        }
+        
         EntityManagerUser entityManagerUser = new EntityManagerUser();
+        //check whether email already exists or not.
+        EntityUser tempEntityUser = entityManagerUser.getUserByEmail(dtoUser.getEntityUser().getEmail());
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Email already exists or invalid.");
+            return clientResponse;
+        }
         EntityUser entityUser = entityManagerUser.createUser(dtoUser.getEntityUser(), entityUserRoles);
         if(entityUser != null && entityUser.getId() > 0)
         {
