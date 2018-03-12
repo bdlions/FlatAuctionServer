@@ -51,13 +51,13 @@ public class BidHandler {
         if( reqEntityBid.getProductId() <= 0 )
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Invalid product to add bid. Please try again later.");
+            clientResponse.setMessage("Invalid product to add a bid. Please try again later.");
             return clientResponse;
         }
         if( reqEntityBid.getPrice() <= 0 )
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Please assign valid amount for the bid.");
+            clientResponse.setMessage("Please assign valid amount for a bid.");
             return clientResponse;
         }
         
@@ -94,12 +94,12 @@ public class BidHandler {
             entityManagerProduct.updateProduct(entityProduct);
             clientResponse.setSuccess(true);
             clientResponse.setResult(entityBid);
-            clientResponse.setMessage("Bid is placed successfully.");
+            clientResponse.setMessage("A bid is placed successfully.");
         }
         else
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Unable to add bid. Please try again later.");
+            clientResponse.setMessage("Unable to add a bid. Please try again later.");
         }
         return clientResponse;
     }
@@ -157,13 +157,13 @@ public class BidHandler {
         if( reqEntityAutoBid.getProductId() <= 0 )
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Invalid product to add auto bid. Please try again later.");
+            clientResponse.setMessage("Invalid product to add an auto bid. Please try again later.");
             return clientResponse;
         }
         if( reqEntityAutoBid.getPrice() <= 0 )
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Please assign valid amount for the auto bid.");
+            clientResponse.setMessage("Please assign valid amount for an auto bid.");
             return clientResponse;
         }
         
@@ -197,12 +197,12 @@ public class BidHandler {
         {
             clientResponse.setSuccess(true);
             clientResponse.setResult(entityAutoBid);
-            clientResponse.setMessage("Auto bid is placed successfully.");
+            clientResponse.setMessage("An auto bid is placed successfully.");
         }
         else
         {
             clientResponse.setSuccess(false);
-            clientResponse.setMessage("Unable to add auto bid. Please try again later.");
+            clientResponse.setMessage("Unable to add an auto bid. Please try again later.");
         }
         return clientResponse;
     }
