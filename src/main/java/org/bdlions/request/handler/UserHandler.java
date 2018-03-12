@@ -184,6 +184,18 @@ public class UserHandler {
             clientResponse.setMessage("Invalid user info. Please try again later.");
             return clientResponse;
         }
+        if(StringUtils.isNullOrEmpty(dtoUser.getEntityUser().getFirstName()))
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("First name is required.");
+            return clientResponse;
+        }
+        if(dtoUser.getRoles() == null || dtoUser.getRoles().isEmpty())
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Role is required.");
+            return clientResponse;
+        }
         EntityManagerUser entityManagerUser = new EntityManagerUser();
         EntityUser tempEntityUser = entityManagerUser.getUserByEmail(dtoUser.getEntityUser().getEmail());
         if(tempEntityUser != null && tempEntityUser.getId() != dtoUser.getEntityUser().getId())

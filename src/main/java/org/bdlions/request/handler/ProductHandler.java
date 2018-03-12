@@ -353,11 +353,17 @@ public class ProductHandler {
     {
         ClientListResponse clientListResponse = new ClientListResponse();
         Gson gson = new Gson();
-        DTOSearchParam dtoSearchParam = gson.fromJson(packet.getPacketBody(), DTOSearchParam.class);        
+        DTOSearchParam dtoSearchParam = gson.fromJson(packet.getPacketBody(), DTOSearchParam.class);     
+        if(dtoSearchParam == null)
+        {
+            clientListResponse.setSuccess(false);
+            clientListResponse.setMessage("Invalid search params.");
+            return clientListResponse;
+        }
         EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
-        List<EntityProduct> entityProductList = entityManagerProduct.searchProducts(dtoSearchParam.getOffset(), dtoSearchParam.getLimit());
+        List<EntityProduct> entityProductList = entityManagerProduct.searchProduct(dtoSearchParam, dtoSearchParam.getOffset(), dtoSearchParam.getLimit());
         clientListResponse.setList(entityProductList);
-        clientListResponse.setCounter(entityManagerProduct.searchTotalProducts());
+        clientListResponse.setCounter(entityManagerProduct.searchTotalProduct(dtoSearchParam));
         clientListResponse.setSuccess(true);
         return clientListResponse;
     }
