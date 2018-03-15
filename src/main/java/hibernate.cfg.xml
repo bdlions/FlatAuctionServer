@@ -46,5 +46,6 @@
         <mapping class="org.bdlions.auction.entity.EntityAutoBid" />
         <mapping class="org.bdlions.auction.entity.EntityMessageHeader" />
         <mapping class="org.bdlions.auction.entity.EntityMessageBody" /> 
+        <mapping class="org.bdlions.auction.entity.EntityAccountSettingsFA" /> 
     </session-factory>
 </hibernate-configuration>

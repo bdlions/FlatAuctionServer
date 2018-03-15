@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Table(
         name = "message_headers",
         indexes = {
-            @Index(name = "idx_subject", columnList = "subject", unique = false),
             @Index(name = "idx_sender_user_id", columnList = "sender_user_id", unique = false)
         }
 )

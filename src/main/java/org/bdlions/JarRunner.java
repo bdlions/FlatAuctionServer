@@ -29,6 +29,8 @@ public class JarRunner{
             channelProviderImpl = new ChannelProviderImpl(requestHandler, sessionManager);
             channelProviderImpl.start();
             HibernateUtil.getSession();
+            KeepAliveDBManager keepAliveDBManager = new KeepAliveDBManager("keepAliveDBManager");
+            keepAliveDBManager.start();
         }
         catch(Exception ex)
         {
@@ -36,6 +38,7 @@ public class JarRunner{
         } 
         
         System.out.println("Server started");
+        
     }
 
 }
