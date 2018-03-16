@@ -197,6 +197,15 @@ public class EntityProduct {
     @Column(name = "total_bids")    
     private int totalBids;
     
+    @Column(name = "is_featured_ad", columnDefinition = "boolean DEFAULT 0")
+    private boolean isFeaturedAd;
+    
+    @Column(name = "is_default_bid", columnDefinition = "boolean DEFAULT 1")
+    private boolean isDefaultBid;
+    
+    @Column(name = "featured_ad_bid", columnDefinition = "double DEFAULT 0")
+    private double featuredAdBid;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
 
@@ -622,6 +631,30 @@ public class EntityProduct {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public boolean isIsFeaturedAd() {
+        return isFeaturedAd;
+    }
+
+    public void setIsFeaturedAd(boolean isFeaturedAd) {
+        this.isFeaturedAd = isFeaturedAd;
+    }
+
+    public boolean isIsDefaultBid() {
+        return isDefaultBid;
+    }
+
+    public void setIsDefaultBid(boolean isDefaultBid) {
+        this.isDefaultBid = isDefaultBid;
+    }
+
+    public double getFeaturedAdBid() {
+        return featuredAdBid;
+    }
+
+    public void setFeaturedAdBid(double featuredAdBid) {
+        this.featuredAdBid = featuredAdBid;
     }
     
 }

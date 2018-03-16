@@ -7,9 +7,13 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
+import java.util.List;
+import org.bdlions.auction.dto.DTOAdBid;
 import org.bdlions.auction.entity.EntityAccountSettingsFA;
+import org.bdlions.auction.entity.EntityProduct;
 import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.manager.EntityManagerAccountSettingsFA;
+import org.bdlions.auction.entity.manager.EntityManagerProduct;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -88,6 +92,42 @@ public class FeaturedAdHandler {
         clientResponse.setSuccess(true);
         clientResponse.setMessage("Account setting for featured ad is saved successfully.");
         clientResponse.setResult(entityAccountSettingsFA);
+        return clientResponse;
+    }
+    
+    @ClientRequest(action = ACTION.UPDATE_AD_BIDS)
+    public ClientResponse updateAdBids(ISession session, IPacket packet) throws Exception 
+    {
+        ClientResponse clientResponse = new ClientResponse();
+        Gson gson = new Gson();
+        DTOAdBid dtoAdBids = gson.fromJson(packet.getPacketBody(), DTOAdBid.class);
+        if(dtoAdBids == null)
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid request to update account setting for featured ad.");
+            return clientResponse;
+        }
+        if(dtoAdBids.getEntityProductList() != null && !dtoAdBids.getEntityProductList().isEmpty())
+        {
+            List<EntityProduct> entityProductList = dtoAdBids.getEntityProductList();
+            EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+            if(entityManagerProduct.updateProducts(entityProductList))
+            {
+                clientResponse.setSuccess(true);
+                clientResponse.setMessage("Ad bids are saved successfully.");
+            }
+            else
+            {
+                clientResponse.setSuccess(false);
+                clientResponse.setMessage("Unable to save ad bids.");
+            }
+        }
+        else
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Please select at lease one product to update ad bid.");
+            return clientResponse;
+        }
         return clientResponse;
     }
 }

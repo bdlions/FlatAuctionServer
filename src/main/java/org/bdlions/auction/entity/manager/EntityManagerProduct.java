@@ -115,6 +115,33 @@ public class EntityManagerProduct {
         }
     }
     
+    public boolean updateProducts(List<EntityProduct> entityProductList)
+    {
+        Session session = HibernateUtil.getSession();        
+        session.clear();
+        Transaction tx = session.getTransaction(); 
+        try 
+        {
+            tx.begin();
+            for(EntityProduct entityProduct: entityProductList)
+            {
+                updateProduct(entityProduct, session);
+            }            
+            tx.commit();
+            return true;
+        } 
+        catch(Exception ex)
+        {
+            logger.error(ex.toString());
+            tx.rollback();
+            return false;
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     public List<EntityProduct> getProducts(int offset, int limit) 
     {
         Session session = HibernateUtil.getSession();
