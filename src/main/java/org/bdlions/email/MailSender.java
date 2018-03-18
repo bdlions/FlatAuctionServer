@@ -28,7 +28,7 @@ import javax.mail.internet.MimeMessage;
 
 public class MailSender {
 
-    String userName = "alamgir@signtechbd.com";
+    String userName = "nazmul@signtechbd.com";
     String password = "password";
 
     public void sendHtmlEmail(String toAddress, String subject, String message) throws AddressException, MessagingException {

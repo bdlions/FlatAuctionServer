@@ -13,12 +13,14 @@ import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.bdlions.auction.dto.DTOUser;
 import org.bdlions.auction.entity.EntityRole;
 import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.EntityUserRole;
 import org.bdlions.auction.entity.manager.EntityManagerUser;
 import org.bdlions.auction.util.Constants;
+import org.bdlions.library.SendMail;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -74,7 +76,16 @@ public class AuthHandler {
 //            return response;
 //        }
         try{
-            session = sessionManager.createSession(credential);
+            session = sessionManager.createSession(credential);  
+            int userId = (int)session.getUserId();
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser entityUser = entityManagerUser.getUserByUserId(userId);
+            if(entityUser != null && entityUser.getAccountStatusId() != Constants.ACCOUNT_STATUS_ID_ACTIVE)
+            {
+                response.setMessage("Your account is not active. Please activate your account first.");
+                response.setSuccess(false);
+                return response;
+            }
         }catch(Exception ex){
             response.setMessage(ClientMessages.INVALID_CREDENTIAL);
             response.setSuccess(false);
@@ -194,12 +205,52 @@ public class AuthHandler {
             clientResponse.setMessage("Email already exists or invalid.");
             return clientResponse;
         }
+        String emailVerificationCode = UUID.randomUUID().toString();
+        dtoUser.getEntityUser().setEmailVerificationCode(emailVerificationCode);
+        dtoUser.getEntityUser().setAccountStatusId(Constants.ACCOUNT_STATUS_ID_INACTIVE);
         EntityUser entityUser = entityManagerUser.createUser(dtoUser.getEntityUser(), entityUserRoles);
         if(entityUser != null && entityUser.getId() > 0)
-        {
+        {            
+            SendMail sendMail = new SendMail();
+            sendMail.sendSignUpMail(entityUser.getEmail(), emailVerificationCode);
             clientResponse.setSuccess(true);
-            clientResponse.setMessage("Account created successfully. Please login.");
+            clientResponse.setMessage("Account created successfully. Please check your inbox to verify email.");
             return clientResponse;
+        }
+        return clientResponse;
+    }
+    
+    @ClientRequest(action = ACTION.FORGET_PASSWORD)
+    public ClientResponse forgetPassword(ISession session, IPacket packet) throws Exception 
+    {
+        ClientResponse clientResponse = new ClientResponse();
+        Gson gson = new Gson();
+        EntityUser reqEntityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);
+        if(reqEntityUser == null || StringUtils.isNullOrEmpty(reqEntityUser.getEmail()))
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid request. Please assign email correctly.");
+            return clientResponse;
+        }
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByEmail(reqEntityUser.getEmail());
+        if(entityUser != null && entityUser.getId() > 0)
+        {
+            if(entityUser.getAccountStatusId() != Constants.ACCOUNT_STATUS_ID_ACTIVE)
+            {
+                clientResponse.setSuccess(false);
+                clientResponse.setMessage("Your account is not active. Please verify your email first.");
+                return clientResponse;
+            }
+            SendMail sendMail = new SendMail();
+            sendMail.sendForgetPasswordMail(entityUser.getEmail(), entityUser.getPassword());
+            clientResponse.setSuccess(true);
+            clientResponse.setMessage("Password is sent to your email.");
+        }
+        else
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid email or email doesn't exist.");
         }
         return clientResponse;
     }

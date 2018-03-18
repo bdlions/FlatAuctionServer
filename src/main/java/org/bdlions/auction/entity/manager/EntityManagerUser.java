@@ -47,6 +47,29 @@ public class EntityManagerUser
         }
     }
     
+    public EntityUser getUserByEmailVerificationCode(String emailVerificationCode)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntityUser> query = session.getNamedQuery("getUserByEmailVerificationCode");
+            query.setParameter("emailVerificationCode", emailVerificationCode);
+            List<EntityUser> userList = query.getResultList();
+            if(userList == null || userList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return userList.get(0);
+            }           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     /**
      * This method will return entity user by user id
      * @param userId user id

@@ -29,6 +29,10 @@ import javax.persistence.Table;
             query = "from EntityUser user where user.email = :email"
     ),
     @NamedQuery(
+            name = "getUserByEmailVerificationCode",
+            query = "from EntityUser user where user.emailVerificationCode = :emailVerificationCode"
+    ),
+    @NamedQuery(
             name = "getUserByUserId",
             query = "from EntityUser user where user.id = :userId"
     ),
@@ -92,6 +96,9 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
 
     @Column(name = "account_status_id", nullable = false, columnDefinition = "int default 1")
     private int accountStatusId;
+    
+    @Column(name = "email_verification_code", length = 200)
+    private String emailVerificationCode;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
@@ -241,6 +248,14 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
 
     public void setGenderTitle(String genderTitle) {
         this.genderTitle = genderTitle;
+    }
+
+    public String getEmailVerificationCode() {
+        return emailVerificationCode;
+    }
+
+    public void setEmailVerificationCode(String emailVerificationCode) {
+        this.emailVerificationCode = emailVerificationCode;
     }
     
 }
