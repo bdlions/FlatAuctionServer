@@ -5,7 +5,7 @@ INSERT INTO `account_status`(`id`, `title`) values
 INSERT INTO `roles`(`id`, `title`, `description`) values
 (1, 'ADMIN', 'Admin'),
 (2, 'LANDLORD', 'Landlord'),
-(3, 'TANENT', 'Tanent'),
+(3, 'TENANT', 'Tenant'),
 (4, 'AGENT', 'Agent');
 
 INSERT INTO `genders`(`id`, `title`, `order_no`) values

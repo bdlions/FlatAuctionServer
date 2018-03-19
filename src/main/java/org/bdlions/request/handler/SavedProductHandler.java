@@ -114,4 +114,33 @@ public class SavedProductHandler {
         clientResponse.setSuccess(true);
         return clientResponse;
     }
+    
+    @ClientRequest(action = ACTION.REMOVE_SAVED_PRODUCT)
+    public ClientResponse deleteSavedProduct(ISession session, IPacket packet) throws Exception 
+    {
+        ClientResponse clientResponse = new ClientResponse();
+        Gson gson = new Gson();
+        EntitySavedProduct entitySavedProduct = gson.fromJson(packet.getPacketBody(), EntitySavedProduct.class);
+        if(entitySavedProduct == null )
+        {
+            clientResponse.setSuccess(false);
+            clientResponse.setMessage("Invalid request to remove saved product. Please try again later.");
+            return clientResponse;
+        }
+        int userId = 0;
+        if(entitySavedProduct.getUserId() == 0)
+        {
+            userId = (int)session.getUserId();
+        }
+        else
+        {
+            userId = entitySavedProduct.getUserId();
+        }
+        entitySavedProduct.setUserId(userId);
+        EntityManagerSavedProduct entityManagerUserProduct = new EntityManagerSavedProduct();
+        entityManagerUserProduct.deleteSavedProductByUserIdProductId(userId, entitySavedProduct.getProductId());
+        clientResponse.setSuccess(true);
+        clientResponse.setMessage("Ad is removed successfully from the saved ad list.");      
+        return clientResponse;
+    }
 }

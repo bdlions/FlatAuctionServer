@@ -29,6 +29,10 @@ import org.hibernate.annotations.NamedQuery;
     @NamedQuery(
             name = "getUserSavedProductByProductId", 
             query = "from EntitySavedProduct product where product.userId = :userId and product.productId = :productId"
+    ),
+    @NamedQuery(
+            name = "deleteSavedProductByUserIdProductId", 
+            query = " delete from EntitySavedProduct product where product.userId = :userId AND product.productId = :productId"
     )
 })
 public class EntitySavedProduct {

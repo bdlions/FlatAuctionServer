@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import org.bdlions.request.handler.AdminLocationHandler;
 import org.bdlions.request.handler.AdminProductHandler;
 import org.bdlions.request.handler.AdminUserHandler;
 import org.bdlions.request.handler.BidHandler;
@@ -131,7 +132,7 @@ public class ClientRequestHandler implements IClientRequestHandler{
     }
 
     private Class[] getDelegators() {
-        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, BidHandler.class, SavedProductHandler.class, MessageHandler.class, AdminProductHandler.class, AdminUserHandler.class, FeaturedAdHandler.class};
+        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, BidHandler.class, SavedProductHandler.class, MessageHandler.class, AdminLocationHandler.class, AdminProductHandler.class, AdminUserHandler.class, FeaturedAdHandler.class};
         return delegators;
     }
 

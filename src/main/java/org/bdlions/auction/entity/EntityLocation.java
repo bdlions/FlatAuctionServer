@@ -24,6 +24,12 @@ import javax.persistence.Table;
 @NamedQueries(
     {
         @NamedQuery(
+                name = "getLocationById", 
+                query =  "from EntityLocation location where location.id = :locationId"
+        ),@NamedQuery(
+                name = "getLocationBySearchString", 
+                query =  "from EntityLocation location where location.searchString = :searchString"
+        ),@NamedQuery(
                 name = "getAllLocations", 
                 query =  "from EntityLocation location"
         )
@@ -50,6 +56,12 @@ public class EntityLocation {
     
     @Column(name = "lon", columnDefinition = "double DEFAULT 0")
     private double lon;
+    
+    @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long createdOn;
+
+    @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long modifiedOn;
 
     public EntityLocation() 
     {
@@ -102,5 +114,23 @@ public class EntityLocation {
 
     public void setLon(double lon) {
         this.lon = lon;
-    }    
+    }  
+
+    public long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public long getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(long modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
+    
+    
 }
