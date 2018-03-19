@@ -112,10 +112,10 @@ public class EntityProduct {
     @Column(name = "location_title", length = 500)
     private String locationTitle;
     
-    @Column(name = "lat", columnDefinition = "int(11) unsigned DEFAULT 1")    
+    @Column(name = "lat", columnDefinition = "double DEFAULT 0")    
     private double lat;
     
-    @Column(name = "lon", columnDefinition = "int(11) unsigned DEFAULT 1")    
+    @Column(name = "lon", columnDefinition = "double DEFAULT 0")    
     private double lon;
     
     @Column(name = "amenity_ids", length = 500)
