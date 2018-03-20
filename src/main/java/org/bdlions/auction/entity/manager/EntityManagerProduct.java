@@ -275,6 +275,30 @@ public class EntityManagerProduct {
                     where += " and lower((reference_id) like '%" + lowerReferenceId + "%'";
                 }
             }
+            if(!StringUtils.isNullOrEmpty(dtoSearchParam.getLocationTitle()))
+            {
+                String lowerLocationTitle = dtoSearchParam.getLocationTitle().toLowerCase();
+                if(where.equals(""))
+                {
+                    where = " where lower(location_title) like '%" + lowerLocationTitle + "%'";
+                }
+                else 
+                {
+                    where += " and lower(location_title) like '%" + lowerLocationTitle + "%'";
+                }
+                if(!StringUtils.isNullOrEmpty(dtoSearchParam.getPostcode()))
+                {
+                    String lowerPostcode = dtoSearchParam.getPostcode().toLowerCase();
+                    if(where.equals(""))
+                    {
+                        where = " where lower(postcode) like '%" + lowerPostcode + "%'";
+                    }
+                    else 
+                    {
+                        where += " or lower(postcode) like '%" + lowerPostcode + "%'";
+                    }
+                }
+            }
             if(dtoSearchParam.getTypeId() > 0)
             {
                 if(where.equals(""))
@@ -387,6 +411,30 @@ public class EntityManagerProduct {
                     where += " and lower((reference_id) like '%" + lowerReferenceId + "%'";
                 }
             }  
+            if(!StringUtils.isNullOrEmpty(dtoSearchParam.getLocationTitle()))
+            {
+                String lowerLocationTitle = dtoSearchParam.getLocationTitle().toLowerCase();
+                if(where.equals(""))
+                {
+                    where = " where lower(location_title) like '%" + lowerLocationTitle + "%'";
+                }
+                else 
+                {
+                    where += " and lower(location_title) like '%" + lowerLocationTitle + "%'";
+                }
+                if(!StringUtils.isNullOrEmpty(dtoSearchParam.getPostcode()))
+                {
+                    String lowerPostcode = dtoSearchParam.getPostcode().toLowerCase();
+                    if(where.equals(""))
+                    {
+                        where = " where lower(postcode) like '%" + lowerPostcode + "%'";
+                    }
+                    else 
+                    {
+                        where += " or lower(postcode) like '%" + lowerPostcode + "%'";
+                    }
+                }
+            }
             if(dtoSearchParam.getTypeId() > 0)
             {
                 if(where.equals(""))

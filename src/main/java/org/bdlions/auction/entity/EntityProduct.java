@@ -112,6 +112,9 @@ public class EntityProduct {
     @Column(name = "location_title", length = 500)
     private String locationTitle;
     
+    @Column(name = "postcode", length = 200)
+    private String postcode;
+    
     @Column(name = "lat", columnDefinition = "double DEFAULT 0")    
     private double lat;
     
@@ -655,6 +658,14 @@ public class EntityProduct {
 
     public void setFeaturedAdBid(double featuredAdBid) {
         this.featuredAdBid = featuredAdBid;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
     
 }

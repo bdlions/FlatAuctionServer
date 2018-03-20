@@ -22,9 +22,9 @@ public class ControllerWorldPay {
     }
 
     @RequestMapping("/success")
-    public void successHandler(@RequestParam("currency_code") String currency_code) 
+    public String successHandler() 
     {
-        System.out.println("currency_code:" + currency_code);
+        return "Worldpay success page.";
     }
     
     @RequestMapping("/cancel")

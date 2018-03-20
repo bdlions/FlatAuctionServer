@@ -15,6 +15,8 @@ public class DTOSearchParam {
     private int availabilityId;
     private double minPrice;
     private double maxPrice;
+    private String locationTitle;
+    private String postcode;
 
     public int getOffset() {
         return offset;
@@ -94,6 +96,22 @@ public class DTOSearchParam {
 
     public void setAvailabilityId(int availabilityId) {
         this.availabilityId = availabilityId;
+    }
+
+    public String getLocationTitle() {
+        return locationTitle;
+    }
+
+    public void setLocationTitle(String locationTitle) {
+        this.locationTitle = locationTitle;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
     
 }

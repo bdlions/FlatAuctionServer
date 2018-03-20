@@ -22,9 +22,9 @@ public class ControllerPaypal {
     }
 
     @RequestMapping("/success")
-    public void successHandler(@RequestParam("tx") String tx) 
+    public String successHandler() 
     {
-        System.out.println("tx:" + tx);
+        return "Worldpay success page.";
     }
     
     @RequestMapping("/cancel")
