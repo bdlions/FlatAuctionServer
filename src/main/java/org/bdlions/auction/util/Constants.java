@@ -48,17 +48,30 @@ public class Constants {
 //    public static final int IMG_PRODUCT_INFO_WIDTH  = 656;
 //    public static final int IMG_PRODUCT_INFO_HEIGHT = 424;
     
-    public static final int IMG_PRODUCT_LIST_WIDTH  = 800;
-    public static final int IMG_PRODUCT_LIST_HEIGHT = 516;
-    public static final int IMG_PRODUCT_INFO_WIDTH  = 800;
-    public static final int IMG_PRODUCT_INFO_HEIGHT = 516;
+    //public static final int IMG_PRODUCT_LIST_WIDTH  = 800;
+    //public static final int IMG_PRODUCT_LIST_HEIGHT = 516;
+    //public static final int IMG_PRODUCT_INFO_WIDTH  = 800;
+    //public static final int IMG_PRODUCT_INFO_HEIGHT = 516;
+    
+    public static final int IMG_PRODUCT_INFO_WIDTH_103  = 103;
+    public static final int IMG_PRODUCT_INFO_HEIGHT_87 = 87;
+    
+    public static final int IMG_PRODUCT_INFO_WIDTH_328  = 328;
+    public static final int IMG_PRODUCT_INFO_HEIGHT_212 = 212;
+    
+    public static final int IMG_PRODUCT_INFO_WIDTH_656  = 656;
+    public static final int IMG_PRODUCT_INFO_HEIGHT_424 = 424;
+    
+    public static final int IMG_PRODUCT_INFO_WIDTH_800  = 800;
+    public static final int IMG_PRODUCT_INFO_HEIGHT_516 = 516;
     
     public static final String PRODUCT_IMAGE_PATH = "resources/images/product/";
+    public static final String IMG_PRODUCT_PATH_103_87 = "resources/images/product/103_87/";
     public static final String IMG_PRODUCT_PATH_328_212 = "resources/images/product/328_212/";
     public static final String IMG_PRODUCT_PATH_656_424 = "resources/images/product/656_424/";
+    public static final String IMG_PRODUCT_PATH_800_516 = "resources/images/product/800_516/";    
     
-    public static final String IMG_PRODUCT_PATH_103_87 = "resources/images/product/103_87/";
-    public static final int IMG_PRODUCT_LIST_WIDTH_103  = 103;
-    public static final int IMG_PRODUCT_LIST_HEIGHT_87 = 87;
+    //public static final int IMG_PRODUCT_LIST_WIDTH_103  = 103;
+    //public static final int IMG_PRODUCT_LIST_HEIGHT_87 = 87;
     
 }

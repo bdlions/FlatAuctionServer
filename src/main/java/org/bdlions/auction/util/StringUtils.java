@@ -1,5 +1,7 @@
 package org.bdlions.auction.util;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -19,5 +21,11 @@ public class StringUtils {
         int min = 1000000;
         referenceId = random.nextInt(max - min + 1) + min + "";
         return referenceId;
+    }
+    
+    public static String getRandomString()
+    {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 }

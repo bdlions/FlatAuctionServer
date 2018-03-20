@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @CrossOrigin
 @RestController
@@ -24,7 +25,7 @@ public class ControllerPaypal {
     @RequestMapping("/success")
     public String successHandler() 
     {
-        return "Worldpay success page.";
+        return "Paypal success page.";
     }
     
     @RequestMapping("/cancel")
@@ -33,5 +34,5 @@ public class ControllerPaypal {
         
         return "You have cancelled the request.";
     }
-
+    
 }
