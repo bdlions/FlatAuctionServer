@@ -43,10 +43,16 @@ public class Constants {
     public static final int IMG_PROFILE_LOGO_WIDTH_100  = 100;
     public static final int IMG_PROFILE_LOGO_HEIGHT_100 = 100;
     
-    public static final int IMG_PRODUCT_LIST_WIDTH  = 328;
-    public static final int IMG_PRODUCT_LIST_HEIGHT = 212;
-    public static final int IMG_PRODUCT_INFO_WIDTH  = 656;
-    public static final int IMG_PRODUCT_INFO_HEIGHT = 424;
+//    public static final int IMG_PRODUCT_LIST_WIDTH  = 328;
+//    public static final int IMG_PRODUCT_LIST_HEIGHT = 212;
+//    public static final int IMG_PRODUCT_INFO_WIDTH  = 656;
+//    public static final int IMG_PRODUCT_INFO_HEIGHT = 424;
+    
+    public static final int IMG_PRODUCT_LIST_WIDTH  = 800;
+    public static final int IMG_PRODUCT_LIST_HEIGHT = 516;
+    public static final int IMG_PRODUCT_INFO_WIDTH  = 800;
+    public static final int IMG_PRODUCT_INFO_HEIGHT = 516;
+    
     public static final String PRODUCT_IMAGE_PATH = "resources/images/product/";
     public static final String IMG_PRODUCT_PATH_328_212 = "resources/images/product/328_212/";
     public static final String IMG_PRODUCT_PATH_656_424 = "resources/images/product/656_424/";

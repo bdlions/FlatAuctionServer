@@ -9,6 +9,7 @@ import java.io.IOException;
 public class ServerConfig extends PropertyProvider{
     private static ServerConfig instance;
     public static final String SERVER_BASE_ABS_PATH        = "SERVER_BASE_ABS_PATH";
+    public static final String SERVER_BASE_URL             = "SERVER_BASE_URL";
     public static final String EMAIL_VERIFICATION_URL      = "EMAIL_VERIFICATION_URL";
     public static final String ACCOUNT_CANCEL_URL          = "ACCOUNT_CANCEL_URL";
     public static final String EMAIL_LOGO_URL              = "EMAIL_LOGO_URL";

@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bdlions.auction.entity.EntityUser;
 import org.bdlions.auction.entity.manager.EntityManagerUser;
 import org.bdlions.auction.util.Constants;
+import org.bdlions.auction.util.ServerConfig;
 import org.bdlions.auction.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @CrossOrigin
 @RestController
@@ -27,7 +29,7 @@ public class ControllerCode {
     }
 
     @RequestMapping("/signup")
-    public String successHandler(@RequestParam("vCode") String vCode) 
+    public ModelAndView successHandler(@RequestParam("vCode") String vCode) 
     {
         if(!StringUtils.isNullOrEmpty(vCode))
         {
@@ -38,10 +40,15 @@ public class ControllerCode {
                 entityUser.setEmailVerificationCode("");
                 entityUser.setAccountStatusId(Constants.ACCOUNT_STATUS_ID_ACTIVE);
                 entityManagerUser.updateUser(entityUser);
-                return "Congratulation! You have activated your account. Please login to your account.";
+                //return "Congratulation! You have activated your account. Please login to your account.";
+                return new ModelAndView("redirect:" + ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_URL)+"#/login;id=1");
+            }
+            else
+            {
+                return new ModelAndView("redirect:" + ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_URL)+"#/login;id=2");
             }
         }
-        return "Invaiid email verification code.";
+        return new ModelAndView("redirect:" + ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_URL)+"#/login;id=2");
     }
     
     @RequestMapping("/cancel")
