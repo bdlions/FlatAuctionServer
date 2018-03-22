@@ -26,28 +26,56 @@ INSERT INTO `users_roles`(`id`, `user_id`, `role_id`) values
 
 INSERT INTO `product_categories`(`id`, `title`) values
 (1, 'Flat/Apartmnt'),
-(2, 'House');
+(2, 'House or Property');
 
-INSERT INTO `product_sizes`(`id`, `title`) values
-(1, '1 Bed'),
-(2, '2 Bed'),
-(3, '3 Bed'),
-(4, '4 Bed'),
-(5, '5 Bed');
+INSERT INTO `product_sizes`(`id`, `title`, `order_no`) values
+(1, '1 Bed', 1),
+(2, '2 Bed', 2),
+(3, '3 Bed', 3),
+(4, '4 Bed', 4),
+(5, '5 Bed', 5),
+(6, '6 Bed', 6),
+(7, '7 Bed', 7),
+(8, '8 Bed', 8),
+(9, '9 Bed', 9),
+(10, '10 Bed', 10);
 
-INSERT INTO `product_types`(`id`, `title`) values
-(1, '1 Room'),
-(2, '2 Room'),
-(3, '3 Room');
+INSERT INTO `product_types`(`id`, `title`, `order_no`) values
+(1, '1 Room', 1),
+(2, '2 Rooms', 2),
+(3, '3 Rooms', 3),
+(4, '4 Rooms', 4),
+(5, '5 Rooms', 5),
+(6, '6 Rooms', 6),
+(7, '7 Rooms', 7),
+(8, '8 Rooms', 8),
+(9, '9 Roomss', 9),
+(10, '10 Rooms', 10);
 
 INSERT INTO `locations`(`id`, `search_string`, `location_type`, `postcode`, `lat`, `lon`) values
 (1, 'london', '1', 'c1', 0, 0);
 
-INSERT INTO `stays`(`id`, `title`) values
-(1, 'No Limit'),
-(2, '1 day'),
-(3, '3 week'),
-(4, '1 month');
+INSERT INTO `stays`(`id`, `title`, `order_no`) values
+(1, 'No Limit', 1),
+(2, '1 Day', 2),
+(3, '3 Weeks', 3),
+(4, '1 Month', 4),
+(5, '2 Months', 5),
+(6, '3 Months', 6),
+(7, '4 Months', 7),
+(8, '5 Months', 8),
+(9, '6 Months', 9),
+(10, '7 Months', 10),
+(11, '8 Months', 11),
+(12, '9 Months', 12),
+(13, '10 Months', 13),
+(14, '11 Months', 14),
+(15, '1 Year', 15),
+(16, '1 Year 3 Months', 16),
+(17, '1 Year 6 Months', 17),
+(18, '1 Year 9 Months', 18),
+(19, '2 Years', 19),
+(20, '3 Years', 20);
 
 INSERT INTO `smokings`(`id`, `title`) values
 (1, 'No preference'),
