@@ -337,6 +337,7 @@ public class MessageHandler {
             tempDTOMessageBody.setCreatedTime(timeUtils.convertUnixToHuman(entityMessageBody.getCreatedOn(), ""));
             dtoMessageBodyList.add(tempDTOMessageBody);
         }
+        clientResponse.setSuccess(true);
         clientResponse.setList(dtoMessageBodyList);
         clientResponse.setCounter(entityManagerMessageBody.getMessageTotalBodyList(dtoMessageBody.getEntityMessageBody().getMessageHeaderId()));
         return clientResponse;
