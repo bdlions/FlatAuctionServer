@@ -25,7 +25,7 @@ import javax.persistence.Table;
     {
         @NamedQuery(
                 name = "getAllCategories", 
-                query =  "from EntityProductCategory category"
+                query =  "from EntityProductCategory product order by product.orderNo asc"
         )
     }
 )
@@ -33,12 +33,14 @@ public class EntityProductCategory {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    
+    @Column(name = "id")    
     private int id;
 
     @Column(name = "title", length = 200)
     private String title;
+    
+    @Column(name = "order_no", columnDefinition = "int default 0")
+    private int orderNo;
 
     public EntityProductCategory() 
     {
@@ -59,5 +61,13 @@ public class EntityProductCategory {
 
     public void setTitle(String title) {
         this.title = title;
-    }    
+    } 
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }   
 }
