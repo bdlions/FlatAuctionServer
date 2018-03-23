@@ -11,6 +11,7 @@ import com.bdlions.dto.response.SignInResponse;
 import org.bdlions.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -110,6 +111,63 @@ public class AuthHandler {
         return response;
     }
     
+    @ClientRequest(action = ACTION.SIGN_IN_FB_CODE)
+    public ClientResponse signInFBCode(ISession session, IPacket packet) throws Exception 
+    {
+        SignInResponse response = new SignInResponse();
+        if(session != null){
+            response.setMessage(ClientMessages.ALREADY_LOGGED_IN);
+            response.setSessionId(session.getSessionId());
+            response.setUserName(session.getUserName());
+            response.setSuccess(true);
+            return response;
+        }
+        if (StringUtils.isNullOrEmpty(packet.getPacketBody())) {
+            response.setMessage(ClientMessages.INVALID_SIGNIN_REQUEST_FORMAT);
+            response.setSuccess(false);
+            return response;
+        }
+
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);     
+        String fbCode = jsonObject.get("fbCode").getAsString();
+
+        Credential credential = new Credential();
+        try{            
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser entityUser = entityManagerUser.getUserByFBCode(fbCode);
+            if(entityUser == null || entityUser.getId() == 0)
+            {
+                response.setMessage("Invalid code. Please try again later.");
+                response.setSuccess(false);
+                return response;
+            }
+            credential.setUserName(entityUser.getEmail());
+            credential.setPassword(entityUser.getPassword());
+            credential.setFirstName(entityUser.getFirstName());
+            credential.setLastName(entityUser.getLastName());
+            session = sessionManager.createSession(credential);            
+        }
+        catch(Exception ex)
+        {
+            response.setMessage("Unable to initialize session. Please try again later.");
+            response.setSuccess(false);
+            return response;
+        }              
+        if(session == null){
+            response.setMessage("Unable to initialize session. Please try again later.");
+            response.setSuccess(false);
+            return response;
+        }
+        
+        session.setRemotePort(packet.getRemotePort());
+        session.setRemoteIP(packet.getRemoteIP());
+        response.setSessionId((String) session.getSessionId());
+        response.setUserName(credential.getUserName());
+        response.setFullName(credential.getFirstName() + " " + credential.getLastName());
+        response.setSuccess(true);
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.SIGN_OUT)
     public ClientResponse signOut(ISession session, IPacket packet) throws Exception 
     {
@@ -186,13 +244,13 @@ public class AuthHandler {
         //setting a default image to user profile based on gender.
         switch (dtoUser.getEntityUser().getGenderId()) {
             case Constants.GENDER_ID_MALE:
-                dtoUser.getEntityUser().setImg("male.jpg");
+                dtoUser.getEntityUser().setImg(Constants.PROFILE_PICTURE_DEFAULT_MALE);
                 break;
             case Constants.GENDER_ID_FEMALE:
-                dtoUser.getEntityUser().setImg("male.jpg");
+                dtoUser.getEntityUser().setImg(Constants.PROFILE_PICTURE_DEFAULT_FEMALE);
                 break;
             default:
-                dtoUser.getEntityUser().setImg("user.jpg");
+                dtoUser.getEntityUser().setImg(Constants.PROFILE_PICTURE_DEFAULT);
                 break;
         }
         

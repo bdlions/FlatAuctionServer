@@ -47,6 +47,29 @@ public class EntityManagerUser
         }
     }
     
+    public EntityUser getUserByFBCode(String fbCode)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntityUser> query = session.getNamedQuery("getUserByFBCode");
+            query.setParameter("fbCode", fbCode);
+            List<EntityUser> userList = query.getResultList();
+            if(userList == null || userList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return userList.get(0);
+            }           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     public EntityUser getUserByEmailVerificationCode(String emailVerificationCode)
     {
         Session session = HibernateUtil.getSession();

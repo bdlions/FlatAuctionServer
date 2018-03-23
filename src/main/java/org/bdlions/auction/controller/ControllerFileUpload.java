@@ -36,7 +36,7 @@ public class ControllerFileUpload {
             try {
                 byte[] bytes = file.getBytes();
                 //name = file.getOriginalFilename();
-                name = StringUtils.getRandomString();
+                name = StringUtils.getRandomString()+".jpg";
                 // Creating the directory to store file
                 String rootPath = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + Constants.IMAGE_UPLOAD_PATH;
                 File dir = new File(rootPath);

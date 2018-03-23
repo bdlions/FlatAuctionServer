@@ -5,6 +5,19 @@ package org.bdlions.auction.util;
  * @author nazmul hasan
  */
 public class Constants {
+    public static final int SIGN_IN_PAGE_ID_SIGNUP_EMAIL_VERIFICATION_SUCCESSFUL = 1;
+    public static final int SIGN_IN_PAGE_ID_SIGNUP_EMAIL_VERIFICATION_FAILED = 2;
+    public static final int SIGN_IN_PAGE_ID_FACEBOOK_AUTH_INVLID_CODE = 3;
+    public static final int SIGN_IN_PAGE_ID_FACEBOOK_AUTH_INVLID_TOKEN = 4;
+    public static final int SIGN_IN_PAGE_ID_FACEBOOK_AUTH_SUCCESS = 5;
+    public static final int SIGN_IN_PAGE_ID_FACEBOOK_AUTH_FAILED_EMAIL_INVALID = 6;
+    public static final int SIGN_IN_PAGE_ID_FACEBOOK_AUTH_FAILE_UNABLE_SIGNUP = 7;
+    
+    public static final String PROFILE_PICTURE_DEFAULT_MALE = "male.jpg";
+    public static final String PROFILE_PICTURE_DEFAULT_FEMALE = "female.jpg";
+    public static final String PROFILE_PICTURE_DEFAULT = "user.jpg";
+    
+    
     public static final int ACCOUNT_STATUS_ID_ACTIVE = 1;
     public static final int ACCOUNT_STATUS_ID_INACTIVE = 2;
     

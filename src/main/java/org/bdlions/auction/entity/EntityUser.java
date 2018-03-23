@@ -20,13 +20,18 @@ import javax.persistence.Table;
         name = "users",
         indexes = {
             @Index(name = "idx_name", columnList = "cell", unique = true),
-            @Index(name = "idx_email", columnList = "email", unique = true)
+            @Index(name = "idx_email", columnList = "email", unique = true),
+            @Index(name = "idx_fb_code", columnList = "fb_code", unique = true)
         }
 )
 @NamedQueries({
     @NamedQuery(
             name = "getUserByEmail",
             query = "from EntityUser user where user.email = :email"
+    ),
+    @NamedQuery(
+            name = "getUserByFBCode",
+            query = "from EntityUser user where user.fbCode = :fbCode"
     ),
     @NamedQuery(
             name = "getUserByEmailVerificationCode",
@@ -60,6 +65,9 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
 
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "fb_code", length = 200)
+    private String fbCode;
 
     @Column(name = "first_name")
     private String firstName;
@@ -257,5 +265,12 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
     public void setEmailVerificationCode(String emailVerificationCode) {
         this.emailVerificationCode = emailVerificationCode;
     }
-    
+
+    public String getFbCode() {
+        return fbCode;
+    }
+
+    public void setFbCode(String fbCode) {
+        this.fbCode = fbCode;
+    }    
 }

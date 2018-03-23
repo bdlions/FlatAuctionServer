@@ -199,11 +199,13 @@ public class ProductHandler {
                 productLibrary.copyUploadedImages(images);
             }            
             clientResponse.setSuccess(true);
+            clientResponse.setMessage("Ad is created successfully.");
             clientResponse.setResult(entityProduct);
         }
         else
         {
             clientResponse.setSuccess(false);
+            clientResponse.setMessage("Unable to create ad. Please try again later.");
         }
         return clientResponse;
     }
@@ -292,6 +294,7 @@ public class ProductHandler {
         else
         {
             clientResponse.setSuccess(false);
+            clientResponse.setMessage("Unable to update ad. Please try again later.");
         }
         return clientResponse;
     }
